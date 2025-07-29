@@ -4,6 +4,8 @@ import java.util.Scanner;
 
 public class App {
 
+    //ARROZ CON WEBO
+
     //Constantes
     static final int MAX_POKEMONES = 3;
     static final int MAX_ATAQUES = 3;
