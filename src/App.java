@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class App {
 
-    //ARROZ CON WEBO
+    //ARROZ CON WEBO y cebolla
 
     //Constantes
     static final int MAX_POKEMONES = 3;
