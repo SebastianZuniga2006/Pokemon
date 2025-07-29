@@ -4,6 +4,8 @@ import java.util.Scanner;
 
 public class App {
 
+    //ARROZ CON WEBO y cebolla
+
     //Constantes
     static final int MAX_POKEMONES = 3;
     static final int MAX_ATAQUES = 3;
@@ -13,6 +15,9 @@ public class App {
     static final int IDX_DEFENSA_POKEMON = 5;
     static final int IDX_VELOCIDAD_POKEMON = 6;
     static final int IDX_DANOS =3;
+    static final int IDX_NOMBRE_OBJETO = 0;
+    static final int IDX_EFECTO_OBJETO = 1;
+    static final int IDX_VALOR_EFECTO_OBJETO = 2;
 
     static Scanner sc = new Scanner(System.in);
     int input=sc.nextInt();
@@ -26,6 +31,26 @@ public class App {
         System.out.println(Arrays.toString(fila));
         }
     }
+
+    public static void pFilasMismaColumna(String[][] arg, int columna, boolean enumerado) {
+        if (enumerado) {
+           for(int i =0; i < arg.length; i++) {
+                if(arg[i][columna].compareTo(null)!=0) {
+                    System.out.println((i+1) + ". " + arg[i][columna]);
+                }
+                
+            } 
+        } else {
+            for(int i =0; i < arg.length; i++) {
+                if((arg[i][columna].compareTo(null)!=0)) {
+                    System.out.println(arg[i][columna]);
+                }
+                
+        }
+        }
+        
+    }
+
     public static void limpiarPantalla() {
         for (int i = 0; i < 10; i++) {
             System.out.println();
@@ -74,13 +99,13 @@ public class App {
             {"15","Alto Impacto", "Electro", "100", "100", "None"}
         };
 
+        
         String objetos[][]={
             //Formato: Nombre, Efecto, Valor, Duracion
-            {"Poké Ball", "Pokemon", "10"},
             {"Frasco Vida", "Vida", "20"},
             {"Frasco Ataque", "Ataque", "20"},
             {"Frasco Defensa", "Defensa", "20"},
-            {"Frasco Velocidad", "Velocidad", "20"},
+            {"Frasco Veneno", "Veneno", "20"},
         };
         //-------------------------------------//
 
@@ -113,7 +138,7 @@ public class App {
         pArg(ataquesPokU2);
         p(Arrays.toString(usuarioDatos));
 
-        pelea(pokemonesUsr1,pokemonesUsr2,ataquesPokU1,ataquesPokU2,"David","Balto");
+        pelea(pokemonesUsr1,pokemonesUsr2,ataquesPokU1,ataquesPokU2,"David","Balto", objetosUsr);
     }
 
     public static String[][] pokemonesRndm(String pokemonesU[][], String pokemonesGen[][]) {
@@ -164,10 +189,12 @@ public class App {
     }
 
 
-    public static int pelea(String[][] pokemonesU1, String[][] pokemonesU2, String[][] ataquesPokU1, String[][] ataquesPokU2, String Jugador1, String Jugador2) {
+    public static int pelea(String[][] pokemonesU1, String[][] pokemonesU2, String[][] ataquesPokU1, String[][] ataquesPokU2, String Jugador1, String Jugador2, String[][]objetosUsr) {
         //Siempre se usa e primer poquemon de cada usario para empezar la pelea
         int pokemonesUsuario1 = MAX_POKEMONES; //pokemones vivos de cada usario
         int pokemonesUsuario2 = MAX_POKEMONES;
+             String efectosPokemonesUsr1 [][] = new String[MAX_POKEMONES][objetosUsr.length];
+        String efectosPokemonesUsr2 [][] = new String[MAX_POKEMONES][objetosUsr.length];
         int turno = 0;
         int pokActivoU1 = 0;
         int pokActivoU2 = 0;
@@ -196,9 +223,16 @@ public class App {
                     p("Escriba la posicion del pokemon que quieres usar");
                     eleccion=sc.nextInt()-1;
                     }while(eleccion<0||eleccion>=MAX_POKEMONES||eleccion==pokActivoU1);
-                }else{
+                } else if (eleccion == 4) {
+                    //Cuando se elija 4.
+                    p("Elija el objeto que quiere usar:");
+                    pFilasMismaColumna(objetosUsr,0,true);
+                    eleccion=Integer.parseInt(sc.nextLine());
+                    usarObjeto(eleccion,pokemonesU1[pokActivoU1],pokemonesU2[pokActivoU2],efectosPokemonesUsr1[pokActivoU1],efectosPokemonesUsr2[pokActivoU2],objetosUsr);
+                } else{
                     atacar(eleccion,pokemonesU1[pokActivoU1],ataquesPokAct1[eleccion],pokemonesU2[pokActivoU2],turno);
                 }
+                
             }else {
                 //Si el usuario 2 es mas veloz, se va a empezar con el usuario 2
                 mostrarPokemon(pokemonesU1[pokActivoU1],ataquesPokAct2,pokemonesU2[pokActivoU1],turno,Jugador2);
@@ -249,4 +283,39 @@ public class App {
 
     }
 
+    
+    public static void usarObjeto(int eleccion, String[]pokemonAtacante, String []pokemonEnem,String[] efectosPkmnAtac,String[] efectosPkmEnem, String[][] objetosUsr){
+        String objetoUsado = objetosUsr[eleccion-1][IDX_NOMBRE_OBJETO];
+        String efectoObjeto = objetosUsr[eleccion-1][IDX_EFECTO_OBJETO];
+        int valorEfectoObjeto = Integer.parseInt(objetosUsr[eleccion-1][IDX_VALOR_EFECTO_OBJETO]);
+        int vidaPokemonAtacante = Integer.parseInt(pokemonAtacante[IDX_VIDA_POKEMON]);
+
+        if (objetoUsado.compareTo("Frasco Vida")==0) {
+            vidaPokemonAtacante+=valorEfectoObjeto;
+            pokemonAtacante[IDX_VIDA_POKEMON] = Integer.toString(vidaPokemonAtacante);
+        } else if (objetoUsado.compareTo("Frasco Ataque")==0
+                  ||objetoUsado.compareTo("Frasco Defensa")==0) {
+            for (int i = 0; i <efectosPkmnAtac.length;i++){
+                if (efectosPkmnAtac[i].compareTo(null)==0
+                || efectosPkmnAtac[i].substring(1).compareTo("Ataque")==0
+                || efectosPkmnAtac[i].substring(1).compareTo("Defensa")==0) {
+                    efectosPkmnAtac[i] = 3 + efectoObjeto;
+                    //3 es la duracion que dura el efecto y que ira reduciendose por turnos
+                    break;
+                }
+            }
+        } else if (objetoUsado.compareTo("Frasco Veneno")==0){
+            for (int i = 0; i <efectosPkmEnem.length;i++){
+                if (efectosPkmEnem[i].compareTo(null)==0
+                || efectosPkmEnem[i].substring(1).compareTo("Veneno")==0) {
+                    efectosPkmEnem[i] = 3 + efectoObjeto;
+                    //3 es la duracion que dura el efecto y que ira reduciendose por turnos
+                    break;
+                }
+            }
+        }
+        
+        
+
+    };
 }
