@@ -7,12 +7,17 @@ public class App {
     //Constantes
     static final int MAX_POKEMONES = 3;
     static final int MAX_ATAQUES = 3;
+
     static final int IDX_NOMBRE_POKEMON = 0;
+    static final int IDX_TIPO1_POKEMON = 1;
+    static final int IDX_TIPO2_POKEMON = 2;
     static final int IDX_VIDA_POKEMON = 3;
     static final int IDX_ATAQUE_POKEMON = 4;
     static final int IDX_DEFENSA_POKEMON = 5;
     static final int IDX_VELOCIDAD_POKEMON = 6;
+
     static final int IDX_DANOS =3;
+    static final int IDX_ATRIBUTO_ATAQUE =  2;
 
     static Scanner sc = new Scanner(System.in);
     int input=sc.nextInt();
@@ -32,7 +37,7 @@ public class App {
         }
     }
     //---------FUNCION MAIN--------------//
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args){
 
 
 
@@ -40,38 +45,44 @@ public class App {
         //---------Datos del Juego--------------//
         String pokemones[][]={
             //Formato: Nombre, Tipo1, Tipo2, Vida, Ataque, Defensa, Velocidad
-            {"Bulbasaur","Hierba","Veneno","20","7","80","10"},
+            {"Bulbasaur","Planta","Veneno","30","7","80","10"},
             {"Charmander","Fuego","None","40","8","80","15"},
             {"Squirtle","Agua","None","60","9","80","15"},
             {"Pikachu","Electro","None","35","4","70","17"},
             {"Charizard","Fuego","Volador","100","20","90","8"},
             {"Mewtwo","Fuego","Volador","100","20","90","8"},
-            {"Mew","Psíquico","None","100","20","90","20"},
-            {"Jigglypuff","Psíquico","None","100","20","90","14"},
-            {"Arceus","Fuego","Volador","100","20","90","11"},
+            {"Mew","Planta","Volador","100","20","90","20"},
+            {"Jigglypuff","Electro","None","100","20","90","14"},
+            {"Arceus","Agua","Volador","100","20","90","11"},
             {"Zapdos","Fuego","Volador","100","20","90","10"},
             {"Lugia","Electro","Volador","100","20","90","8"},
             {"Kyogre","Agua","Volador","100","20","90","8"},
         };
 
         String ataques[][]={
-            //Formato: idAtaque(para evitar ataques repetidos),  Nombre, Tipo1, Daño, Precisión, Efecto
+            //Formato: idAtaque, Nombre, Tipo, Daño
+            //Se usa el idAtaque para evitar repetidos
             //Tambien se podrian separar por tipo para hacer mas facil la busqueda
-            {"1","Ataque Furia", "Normal", "20", "100", "None"},
-            {"2","Impactrueno","Electro","40","100","None"},
-            {"3","Colminllo Igneo","Fuego","60","100","None"},
-            {"4","Pirotecnia","Fuego","80","100","None"},
-            {"5","Hidrocañón","Agua","100","100","None"},
-            {"6","Acua Cola","Agua","100","100","None"},
-            {"7","Pistola Agua","Agua","100","100","None"},
-            {"8","Planta Feroz","Planta","100","100","None"},
-            {"9","Rayo Solar","Planta","100","100","None"},
-            {"10","Bomba lodo", "Planta","100","100","Veneno"},
-            {"11","Caida Picada", "Volador", "100", "100", "None"},
-            {"12","Ataque Fuego", "Fuego", "100", "100", "None"},
-            {"13","Ataque Planta", "Planta", "100", "100", "None"},
-            {"14","Ataque Volador", "Volador", "100", "100", "None"},
-            {"15","Alto Impacto", "Electro", "100", "100", "None"}
+            {"1","Ataque Furia", "Normal", "20"},
+            {"2","Impactrueno","Electro","35"},
+            {"3","Colminllo Igneo","Fuego","24"},
+            {"4","Pirotecnia","Fuego","34"},
+            {"5","Hidrocañón","Agua","26"},
+            {"6","Acua Cola","Agua","20"},
+            {"7","Pistola Agua","Agua","15"},
+            {"8","Planta Feroz","Planta","100","24"},
+            {"9","Rayo Solar","Planta","100","35"},
+            {"10","Bomba lodo", "Planta","32"},
+            {"11","Caida Picada", "Volador", "20"},
+            {"12","Ataque Fuego", "Fuego", "22"},
+            {"13","Ataque Planta", "Planta", "20"},
+            {"14","Ataque Volador", "Volador", "20"},
+            {"15","Alto Impacto", "Electro", "30"},
+            {"16","Electrocargado", "Electro", "50"},
+            {"17","Sobrecarga", "Electro", "40"},
+            {"18","Caza furtiva", "Volador", "30"},
+            {"19","Picada", "Volador", "20"},
+            {"20","Tormenta", "Electro", "35"}
         };
 
         String objetos[][]={
@@ -82,6 +93,7 @@ public class App {
             {"Frasco Defensa", "Defensa", "20"},
             {"Frasco Velocidad", "Velocidad", "20"},
         };
+
         //-------------------------------------//
 
         //---------Datos del Usuario--------------//
@@ -100,20 +112,13 @@ public class App {
         String objetosUsr[][] = new String[3][objetos[0].length];
 
             pokemonesUsr1= pokemonesRndm(pokemonesUsr1, pokemones);
-            ataquesPokU1= ataquesRndm(ataquesPokU1, ataques);
+            ataquesPokU1= ataquesRndm(ataquesPokU1, ataques,pokemonesUsr1);
             pokemonesUsr2= pokemonesRndm(pokemonesUsr2, pokemones);
-            ataquesPokU2= ataquesRndm(ataquesPokU2, ataques);
+            ataquesPokU2= ataquesRndm(ataquesPokU2, ataques,pokemonesUsr2);
 
             //objetosUsr = ataquesRndm(objetosUsr, objetos);
 
-
-        pArg(pokemonesUsr1);
-        pArg(ataquesPokU1); 
-        pArg(pokemonesUsr2);
-        pArg(ataquesPokU2);
-        p(Arrays.toString(usuarioDatos));
-
-        pelea(pokemonesUsr1,pokemonesUsr2,ataquesPokU1,ataquesPokU2,"David","Balto");
+        pelea(pokemonesUsr1,pokemonesUsr2,ataquesPokU1,ataquesPokU2,"J1","J2");
     }
 
     public static String[][] pokemonesRndm(String pokemonesU[][], String pokemonesGen[][]) {
@@ -127,7 +132,7 @@ public class App {
         return pokemonesU;
     }
 
-    public static String[][] ataquesRndm(String ataquesPok[][], String ataquesGen[][]) {
+    public static String[][] ataquesRndm(String ataquesPok[][], String ataquesGen[][],String[][] pokemones) {
         //Por las dudas :), si el usuario tiene mas ataques que el generador, devuelve el arrelgo sin modificar
         if(ataquesGen.length<ataquesPok.length) {
             System.out.println("El número de ataques generados es menor que el número de ataques del usuario");
@@ -140,12 +145,6 @@ public class App {
                 int random;
                 boolean repetido=false;
                 do{ 
-                    /*            
-                    *HashSet<Integer> repetidos = new HashSet<Integer>();
-                    *repetidos.add(random);
-                    do while(repetidos.contains(random));
-                    */
-
                     repetido=false;
                     random = (int)(Math.random()*ataquesGen.length);
                     for(int c=0; c<j; c++) {
@@ -168,10 +167,12 @@ public class App {
         //Siempre se usa e primer poquemon de cada usario para empezar la pelea
         int pokemonesUsuario1 = MAX_POKEMONES; //pokemones vivos de cada usario
         int pokemonesUsuario2 = MAX_POKEMONES;
-        int turno = 0;
-        int pokActivoU1 = 0;
-        int pokActivoU2 = 0;
+        int turno = 0;        int pokActivoU1 = 0;        int pokActivoU2 = 0;
         int eleccion=0;
+
+        String efectosjugador1[][]= new String[MAX_POKEMONES][10];
+        String efectosjugador2[][]= new String[MAX_POKEMONES][10];
+
         boolean jugador1=true;
         if(Integer.parseInt(pokemonesU1[0][IDX_VELOCIDAD_POKEMON])<=Integer.parseInt(pokemonesU2[0][IDX_VELOCIDAD_POKEMON]))jugador1=false;
         do{
@@ -191,26 +192,25 @@ public class App {
                 //Si el usuario 1 es mas veloz, se va a empezar con el usuario 1
                 mostrarPokemon(pokemonesU1[pokActivoU1],ataquesPokAct1,pokemonesU2[pokActivoU2],turno,Jugador1);
                 eleccion=sc.nextInt();
-                if(eleccion==5){
-                    do{
-                    p("Escriba la posicion del pokemon que quieres usar");
-                    eleccion=sc.nextInt()-1;
-                    }while(eleccion<0||eleccion>=MAX_POKEMONES||eleccion==pokActivoU1);
-                }else{
-                    atacar(eleccion,pokemonesU1[pokActivoU1],ataquesPokAct1[eleccion],pokemonesU2[pokActivoU2],turno);
-                }
+                do{
+                    if(eleccion==5){    
+                        pokActivoU1=cambiarPokemon(pokemonesU1, pokActivoU1);//Cambio de pokemon
+                    }else if(eleccion>=0 && eleccion<=MAX_ATAQUES){
+                        //ataque
+                        pokemonesU2[pokActivoU2][IDX_VIDA_POKEMON]=atacar(eleccion-1,pokemonesU1[pokActivoU1],ataquesPokAct1[eleccion],pokemonesU2[pokActivoU2]);
+                    }
+                }while(eleccion<0 || eleccion>=MAX_ATAQUES+2);
             }else {
                 //Si el usuario 2 es mas veloz, se va a empezar con el usuario 2
                 mostrarPokemon(pokemonesU1[pokActivoU1],ataquesPokAct2,pokemonesU2[pokActivoU1],turno,Jugador2);
                 eleccion=sc.nextInt();
-                if(eleccion==5){
-                    do{
-                    p("Escriba la posicion del pokemon que quieres usar");
-                    eleccion=sc.nextInt()-1;
-                    }while(eleccion<0||eleccion>=MAX_POKEMONES||eleccion==pokActivoU1);
-                }else{
-                    atacar(eleccion,pokemonesU2[pokActivoU2],ataquesPokAct2[eleccion],pokemonesU1[pokActivoU1],turno);
-                }
+                do{
+                    if(eleccion==5){
+                        pokActivoU2=cambiarPokemon(pokemonesU2, pokActivoU2);
+                    }else if(eleccion>=0 && eleccion<=4){
+                        pokemonesU1[pokActivoU1][IDX_VIDA_POKEMON]=atacar(eleccion-1,pokemonesU2[pokActivoU2],ataquesPokAct2[eleccion],pokemonesU1[pokActivoU1]);
+                    }
+                }while(eleccion<0 || eleccion>=MAX_ATAQUES+2);
             }
  
             jugador1=!jugador1;
@@ -235,18 +235,58 @@ public class App {
 
     }
 
-    public static void atacar(int eleccion, String[]pokemonAtacante, String[] ataquePokemon,String []pokemonAfectado, int turno) {
+    public static String atacar(int eleccion, String[]pokemonAtacante, String[] ataquePokemon,String []pokemonAfectado) {
 
         int vidaPokemon = Integer.parseInt(pokemonAfectado[IDX_VIDA_POKEMON]);
 
         int danioPokemon = Integer.parseInt(ataquePokemon[IDX_DANOS]);
-        int defensaPokemon = Integer.parseInt(pokemonAfectado[IDX_DEFENSA_POKEMON]);
+        int defensaPokemonA = Integer.parseInt(pokemonAfectado[IDX_DEFENSA_POKEMON]);
         int danioHabilidad = Integer.parseInt(ataquePokemon[IDX_DANOS]);
+        double ventajaAtaque = ventajaAtributo(ataquePokemon[IDX_ATRIBUTO_ATAQUE], pokemonAfectado[IDX_TIPO1_POKEMON],pokemonAfectado[IDX_TIPO2_POKEMON]);
 
-        vidaPokemon-= danioHabilidad*danioPokemon/defensaPokemon;
+        double danio = ((danioHabilidad*danioPokemon)/defensaPokemonA)*ventajaAtaque;
+        vidaPokemon-= danio;
         if(vidaPokemon<0)vidaPokemon=0;
-        p("El ataque de "+ataquePokemon[IDX_NOMBRE_POKEMON]+" inflige "+danioPokemon+" PS de danio y "+danioHabilidad+" PS de danio habilidad");
+        if(ventajaAtaque>1)p("El ataque de "+pokemonAtacante[IDX_NOMBRE_POKEMON]+" es efectivo");
+        else if(ventajaAtaque<1)p("El ataque de "+pokemonAtacante[IDX_NOMBRE_POKEMON]+" es debil");
+        p("El ataque de "+pokemonAtacante[IDX_NOMBRE_POKEMON]+" inflige "+danio+" PS de danio");
+        return Integer.toString(vidaPokemon);
+    }
+ 
+    public static int cambiarPokemon(String[][]pokemones, int pokemonAct){
+        int posicion=0;
+        do{
+            p("Escriba la posicion del pokemon que quieres usar");
+                posicion=sc.nextInt()-1;
+            if(pokemones[pokemonAct][IDX_VIDA_POKEMON].equals("0")){
+                p("Ese pokemon no tiene vida, intente de nuevo");posicion=-1;
+            }
+        }while(posicion<0||posicion>=MAX_POKEMONES||posicion==pokemonAct);
+        pokemonAct=posicion;
 
+        return posicion;
+    }
+
+    public static double ventajaAtributo(String atributoAtaca, String atributoAfectado1,String atributoAfectado2) {
+        String ventajas[][]={
+            //Formato: Atributo, FuerteContra, DebilContra
+            {"Fuego", "Planta", "Agua"},
+            {"Planta", "Agua", "Fuego"},
+            {"Agua", "Fuego", "Planta"},
+            {"Electro", "Volador", "Agua"},
+            {"Volador", "Planta", "Electro"}
+        };
+        double ventaja=1;
+        for(int i=0; i<ventajas.length; i++) {
+            if(ventajas[i][0].equals(atributoAtaca)) {
+                if(ventajas[i][1].equals(atributoAfectado1)||ventajas[i][1].equals(atributoAfectado2)) {
+                    ventaja+=0.5;}
+                if(ventajas[i][2].equals(atributoAfectado1)||ventajas[i][2].equals(atributoAfectado2)) {
+                    ventaja-=0.5;
+                }
+            }
+        }
+        return ventaja;
     }
 
 }
