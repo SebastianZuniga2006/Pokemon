@@ -220,10 +220,7 @@ public class App {
                 mostrarPokemon(pokemonesU1[pokActivoU1],ataquesPokAct1,pokemonesU2[pokActivoU2],turno,Jugador1);
                 eleccion=sc.nextInt();
                 if(eleccion==5){
-                    do{
-                    p("Escriba la posicion del pokemon que quieres usar");
-                    eleccion=sc.nextInt()-1;
-                    }while(eleccion<0||eleccion>=MAX_POKEMONES||eleccion==pokActivoU1);
+                    cambiarPokemon(pokemonesU1, pokActivoU1);//Cambio de pokemon
                 } else if (eleccion == 4) {
                     //Cuando se elija 4.
                     p("Elija el objeto que quiere usar:");
@@ -233,24 +230,20 @@ public class App {
                 } else{
                     atacar(eleccion,pokemonesU1[pokActivoU1],ataquesPokAct1[eleccion],pokemonesU2[pokActivoU2]);
                 }
-                
-                do{
-                    if(eleccion==5){    
-                        pokActivoU1=cambiarPokemon(pokemonesU1, pokActivoU1);//Cambio de pokemon
-                    }else if(eleccion>=0 && eleccion<=MAX_ATAQUES){
-                        //ataque
-                        pokemonesU2[pokActivoU2][IDX_VIDA_POKEMON]=atacar(eleccion-1,pokemonesU1[pokActivoU1],ataquesPokAct1[eleccion],pokemonesU2[pokActivoU2]);
-                    }
-                }while(eleccion<0 || eleccion>=MAX_ATAQUES+2);
             }else {
                 //Si el usuario 2 es mas veloz, se va a empezar con el usuario 2
                 mostrarPokemon(pokemonesU1[pokActivoU1],ataquesPokAct2,pokemonesU2[pokActivoU1],turno,Jugador2);
                 eleccion=sc.nextInt();
                 do{
                     if(eleccion==5){
-                        pokActivoU2=cambiarPokemon(pokemonesU2, pokActivoU2);
-                    }else if(eleccion>=0 && eleccion<=4){
-                        pokemonesU1[pokActivoU1][IDX_VIDA_POKEMON]=atacar(eleccion-1,pokemonesU2[pokActivoU2],ataquesPokAct2[eleccion],pokemonesU1[pokActivoU1]);
+                        cambiarPokemon(pokemonesU2, pokActivoU2);
+                    }else if(eleccion==4){
+                        p("Elija el objeto que quiere usar:");
+                    pFilasMismaColumna(objetosUsr,0,true);
+                    eleccion=Integer.parseInt(sc.nextLine());
+                    usarObjeto(eleccion,pokemonesU1[pokActivoU1],pokemonesU2[pokActivoU2],efectosPokemonesUsr1[pokActivoU1],efectosPokemonesUsr2[pokActivoU2],objetosUsr);
+                    }else{
+                        atacar(eleccion,pokemonesU2[pokActivoU2],ataquesPokAct2[eleccion],pokemonesU1[pokActivoU1]);
                     }
                 }while(eleccion<0 || eleccion>=MAX_ATAQUES+2);
             }
