@@ -456,11 +456,13 @@ public class App {
         
             turno++;
             //Ya ponlo donde necesites xd
-            validarEfectosEnJugador(efectosPokemonesUsr1,pokemonesU1);
-            validarEfectosEnJugador(efectosPokemonesUsr2,pokemonesU2);
+           
+
 
             if(jugador1) {
                 //Si el usuario 1 es mas veloz, se va a empezar con el usuario 1
+                validarEfectosEnJugador(efectosPokemonesUsr1,pokemonesU1);
+                pokActivoU1=validarVida(pokemonesUsuario1, pokemonesU1, pokActivoU1);
                 mostrarPokemon(pokemonesU1[pokActivoU1],ataquesPokAct1,pokemonesU2[pokActivoU2],turno,Jugador1);
                 do{
                 eleccion=validarDato(1, MAX_ATAQUES+2, "Elija la accion a realizar:");
@@ -489,6 +491,8 @@ public class App {
                 } 
                 }while(!ataco); ///Se repite en caso de no haber usado un ataque o cambiado de pokemon
             }else {
+                validarEfectosEnJugador(efectosPokemonesUsr2,pokemonesU2);
+                pokActivoU2=validarVida(pokemonesUsuario2, pokemonesU2, pokActivoU2);
                 //Si el usuario 2 es mas veloz, se va a empezar con el usuario 2
                 mostrarPokemon(pokemonesU1[pokActivoU1],ataquesPokAct2,pokemonesU2[pokActivoU2],turno,Jugador2);
                 do{
@@ -820,8 +824,9 @@ public class App {
                 nuevoPok=-1;
             }
         }while (nuevoPok==-1);
+        nuevoPok--;
         }
-        return nuevoPok-1;//Indice del pokemon seleccionado
+        return nuevoPok;//Indice del pokemon seleccionado
     }
 
 
