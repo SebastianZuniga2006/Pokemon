@@ -74,18 +74,18 @@ public class App {
         //---------Datos del Juego--------------//
         String pokemones[][]={
             //Formato: Nombre, Tipo1, Tipo2, Vida, Ataque, Defensa, Velocidad, Vida Maxima
-            {"Bulbasaur","Planta","Agua","30","7","80","10","30"},
-            {"Charmander","Fuego","None","40","8","80","15","40"},
-            {"Squirtle","Agua","None","60","9","80","15","60"},
-            {"Pikachu","Electro","None","35","4","70","17","35"},
-            {"Charizard","Fuego","Volador","100","20","90","8","100"},
-            {"Mewtwo","Fuego","Volador","100","20","90","8","100"},
-            {"Mew","Planta","Volador","100","20","90","20","100"},
-            {"Jigglypuff","Electro","None","100","20","90","14","100"},
-            {"Arceus","Agua","Volador","100","20","90","11","100"},
-            {"Zapdos","Fuego","Volador","100","20","90","10","100"},
-            {"Lugia","Electro","Volador","100","20","90","8","100"},
-            {"Kyogre","Agua","Volador","100","20","90","8","100"},
+            {"Bulbasaur","Planta","Agua","30","7","50","10","30"},
+            {"Charmander","Fuego","None","40","8","43","15","40"},
+            {"Squirtle","Agua","None","60","9","48","15","60"},
+            {"Pikachu","Electro","None","40","4","45","17","35"},
+            {"Charizard","Fuego","Volador","90","35","40","10","100"},
+            {"Mewtwo","Fuego","Volador","100","40","40","3","100"},
+            {"Mew","Planta","Volador","80","50","30","20","80"},
+            {"Jigglypuff","Electro","None","110","30","35","14","110"},
+            {"Arceus","Agua","Volador","100","35","45","11","100"},
+            {"Zapdos","Fuego","Volador","85","38","60","10","85"},
+            {"Lugia","Electro","Volador","90","35","55","8","90"},
+            {"Kyogre","Agua","Volador","80","40","50","8","80"},
         };
 
         String ataques[][]={
@@ -284,7 +284,7 @@ public class App {
                     pokemonesU2[pokActivoU2][IDX_VIDA_POKEMON]=atacar(eleccion-1,pokemonesU1[pokActivoU1],ataquesPokAct1[eleccion-1],pokemonesU2[pokActivoU2]);
                     if(pokemonesU2[pokActivoU2][IDX_VIDA_POKEMON].equals("0") && pokemonesUsuario2>0){
                         pokemonesUsuario2--;
-                        pokActivoU2=validarVida(pokemonesUsuario2,pokemonesU2);
+                        pokActivoU2=validarVida(pokemonesUsuario2,pokemonesU2,pokActivoU2);
                     }
                     ataco=true;
                 } 
@@ -295,7 +295,8 @@ public class App {
                 do{
                 eleccion=validarDato(1, MAX_ATAQUES+2, "Elija la accion a realizar:");
                     if(eleccion==5){
-                        cambiarPokemon(pokemonesU2, pokActivoU2);
+                        pokActivoU2=cambiarPokemon(pokemonesU2, pokActivoU2);
+                        ataco=true;
                     }else if (eleccion == 4) {
                     //Cuando se elija 4.
                     if (objetosRestantesUsr2==0) {
@@ -311,7 +312,7 @@ public class App {
                     pokemonesU1[pokActivoU1][IDX_VIDA_POKEMON]=atacar(eleccion-1,pokemonesU2[pokActivoU2],ataquesPokAct2[eleccion-1],pokemonesU1[pokActivoU1]);
                     if(pokemonesU2[pokActivoU2][IDX_VIDA_POKEMON].equals("0" )&& pokemonesUsuario1>0){
                         pokemonesUsuario1--;
-                        pokActivoU1=validarVida(pokemonesUsuario1,pokemonesU1);
+                        pokActivoU1=validarVida(pokemonesUsuario1,pokemonesU1,pokActivoU1);
                     }
                     ataco=true;
                 }        
@@ -374,9 +375,6 @@ public class App {
         if(ventajaAtaque>1)p("El ataque es efectivo");
         else if(ventajaAtaque<1)p("El ataque es debil");
         p(pokemonAtacante[IDX_NOMBRE_POKEMON]+" inflige "+(int)danio+" PS de danio");
-        if(vidaPokemon==0){
-        p(pokemonAfectado[IDX_NOMBRE_POKEMON]+" ya no puede continuar");
-        }
         return Integer.toString(vidaPokemon);
     }
  
@@ -545,15 +543,19 @@ public class App {
      * @param pokemonesUsr //Array de Strings que contiene los pokemones del usuario
      * @return //Numero del pokemon que se va a usar
      */
-    public static int validarVida(int pokemonesRestantes, String[][] pokemonesUsr){
-        int nuevoPok;
+    public static int validarVida(int pokemonesRestantes, String[][] pokemonesUsr, int pokemonAct){
+        int nuevoPok=pokemonAct;
+        if(Integer.parseInt(pokemonesUsr[pokemonAct][IDX_VIDA_POKEMON])<=0){
         do {
+            p(pokemonesUsr[pokemonAct][IDX_NOMBRE_POKEMON]+" ya no puede continuar");
             nuevoPok=validarDato(1, MAX_POKEMONES, "Ingrese el pokemon que quiere usar:");
-            if(!pokemonesUsr[nuevoPok-1][IDX_VIDA_POKEMON].equals("0")){
+            if(Integer.parseInt(pokemonesUsr[nuevoPok-1][IDX_VIDA_POKEMON])<=0){
+                pokemonesUsr[nuevoPok-1][IDX_VIDA_POKEMON]="0";
                 p("El pokemon seleccionado ya no tiene vida, intente con otro pokemon");
                 nuevoPok=-1;
             }
         }while (nuevoPok==-1);
+        }
         return nuevoPok-1;//Indice del pokemon seleccionado
     }
 
