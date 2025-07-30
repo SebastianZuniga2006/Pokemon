@@ -124,7 +124,8 @@ public class App {
             {"Hierro", "Defensa", "30","2","3"},
             {"Toxifruta", "Veneno", "10","3","3"},
             {"Gota Morada", "Veneno", "7","4","3"},
-            {"Fragmento Vital", "Revivir", "0.5","0","2"}
+            {"Fragmento Vital", "Revivir", "0.5","0","2"},
+            {"Infusión Vital","Regeneracion","7","4","3"}
             //{"Piedra evolución", "Evolución", "0",""},
             //{"Baya", "Vida", "10","0"},
             //{"Curavita", "Vida", "30","0"},
@@ -258,7 +259,9 @@ public class App {
             };
         
             turno++;
-            validarEfectosEnJugadores();
+            //Ya ponlo donde necesites xd
+            validarEfectosEnJugador(efectosPokemonesUsr1,pokemonesU1);
+            validarEfectosEnJugador(efectosPokemonesUsr2,pokemonesU2);
 
             if(jugador1) {
                 //Si el usuario 1 es mas veloz, se va a empezar con el usuario 1
@@ -451,6 +454,7 @@ public class App {
             usóObjeto = true;
 
         } else if (efectoObjeto.equals("Ataque")
+                  ||efectoObjeto.equals("Regeneracion")
                   ||efectoObjeto.equals("Defensa")) {
             for (int i = 0; i <efectosPkmnAtac[0].length;i+=3){
                 if (efectosPkmnAtac[pokemonActvivoAtac][i].equals(null)
@@ -504,7 +508,72 @@ public class App {
         return usóObjeto;
     };
 
-    public static void validarEfectosEnJugadores(){}
+    public static void validarEfectosEnJugador(String[][] efectosPokemns,String[][]pokemnsUsr){
+        for(int j = 0; j < efectosPokemns.length;j++){
+            for(int i = 0; i < efectosPokemns[0].length;i+=3){
+                if (efectosPokemns[j][i].equals("Veneno")){
+                    if (efectosPokemns[j][i+2]=="0"){
+                        efectosPokemns[j][i] = null;
+                        efectosPokemns[j][i+1] = null;
+                        efectosPokemns[j][i+2] = null;
+                    } else{
+                        int temp = Integer.parseInt(pokemnsUsr[j][IDX_VIDA_POKEMON]);
+                    temp -= Integer.parseInt(efectosPokemns[j][i+1]);
+                    pokemnsUsr[j][IDX_VIDA_POKEMON]= Integer.toString(temp);
+                    
+                    //Elimina 1 a los turnos restantes de la duracion
+                    efectosPokemns[j][i+2]=Integer.toString(Integer.parseInt(efectosPokemns[j][i+2])-1);
+                    }
+                    
+
+                } else if (efectosPokemns[j][i].equals("Defensa")){
+                    int temp = Integer.parseInt(pokemnsUsr[j][IDX_DEFENSA_POKEMON]);
+                    if (efectosPokemns[j][i+2]=="0") {
+                        efectosPokemns[j][i] = null;
+                        efectosPokemns[j][i+1] = null;
+                        efectosPokemns[j][i+2] = null;
+                        temp-=Integer.parseInt(pokemnsUsr[j][IDX_DEFENSA_POKEMON]);
+                        pokemnsUsr[j][IDX_DEFENSA_POKEMON]= Integer.toString(temp);
+                    } else if (Integer.parseInt(efectosPokemns[j][i+2])<0) {
+                        int duracionAux = Integer.parseInt(efectosPokemns[j][i+2]) + 1;
+                        efectosPokemns[j][i+2] = Integer.toString(duracionAux);
+                    } else {
+                        temp+=Integer.parseInt(efectosPokemns[j][i+1]);
+                        pokemnsUsr[j][IDX_DEFENSA_POKEMON]= Integer.toString(temp);
+                    }
+                } else if (efectosPokemns[j][i].equals("Regeneracion")){
+                    if (efectosPokemns[j][i+2]=="0"){
+                        efectosPokemns[j][i] = null;
+                        efectosPokemns[j][i+1] = null;
+                        efectosPokemns[j][i+2] = null;
+                    } else{
+                        int temp = Integer.parseInt(pokemnsUsr[j][IDX_VIDA_POKEMON]);
+                    temp += Integer.parseInt(efectosPokemns[j][i+1]);
+                    pokemnsUsr[j][IDX_VIDA_POKEMON]= Integer.toString(temp);
+                    
+                    //Elimina 1 a los turnos restantes de la duracion
+                    efectosPokemns[j][i+2]=Integer.toString(Integer.parseInt(efectosPokemns[j][i+2])-1);
+                    }
+                } else if (efectosPokemns[j][i].equals("Ataque")){
+                    int temp = Integer.parseInt(pokemnsUsr[j][IDX_ATAQUE_POKEMON]);
+                    if (efectosPokemns[j][i+2]=="0") {
+                        efectosPokemns[j][i] = null;
+                        efectosPokemns[j][i+1] = null;
+                        efectosPokemns[j][i+2] = null;
+                        temp-=Integer.parseInt(pokemnsUsr[j][IDX_ATAQUE_POKEMON]);
+                        pokemnsUsr[j][IDX_ATAQUE_POKEMON]= Integer.toString(temp);
+                    } else if (Integer.parseInt(efectosPokemns[j][i+2])<0) {
+                        int duracionAux = Integer.parseInt(efectosPokemns[j][i+2]) + 1;
+                        efectosPokemns[j][i+2] = Integer.toString(duracionAux);
+                    } else {
+                        temp+=Integer.parseInt(efectosPokemns[j][i+1]);
+                        pokemnsUsr[j][IDX_ATAQUE_POKEMON]= Integer.toString(temp);
+                    }
+                }
+
+            }
+        }
+    }
 
     public static void ordenarVerticalmenteObjetos(String[][]objetosUsr){
         boolean huboCambio = false;
