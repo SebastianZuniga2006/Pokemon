@@ -9,6 +9,7 @@ public class App {
     //Constantes
     static final int MAX_POKEMONES = 3;
     static final int MAX_ATAQUES = 3;
+    static final int MAX_OBJETOS = 3;
 
     static final int IDX_NOMBRE_POKEMON = 0;
     static final int IDX_TIPO1_POKEMON = 1;
@@ -17,12 +18,17 @@ public class App {
     static final int IDX_ATAQUE_POKEMON = 4;
     static final int IDX_DEFENSA_POKEMON = 5;
     static final int IDX_VELOCIDAD_POKEMON = 6;
+    static final int IDX_VIDA_MAXIMA_POKEMON = 7;
 
     static final int IDX_DANOS =3;
+    static final int IDX_ATRIBUTO_ATAQUE =  2;
+
     static final int IDX_NOMBRE_OBJETO = 0;
     static final int IDX_EFECTO_OBJETO = 1;
     static final int IDX_VALOR_EFECTO_OBJETO = 2;
-    static final int IDX_ATRIBUTO_ATAQUE =  2;
+    static final int IDX_DURACION_EFECTO_OBJETO = 3;
+    static final int IDX_CANTIDAD_OBJETO =  4;
+    
 
     static Scanner sc = new Scanner(System.in);
     int input=sc.nextInt();
@@ -37,24 +43,7 @@ public class App {
         }
     }
 
-    public static void pFilasMismaColumna(String[][] arg, int columna, boolean enumerado) {
-        if (enumerado) {
-           for(int i =0; i < arg.length; i++) {
-                if(arg[i][columna].compareTo(null)!=0) {
-                    System.out.println((i+1) + ". " + arg[i][columna]);
-                }
-                
-            } 
-        } else {
-            for(int i =0; i < arg.length; i++) {
-                if((arg[i][columna].compareTo(null)!=0)) {
-                    System.out.println(arg[i][columna]);
-                }
-                
-        }
-        }
-        
-    }
+    
 
     public static void limpiarPantalla() {
         for (int i = 0; i < 10; i++) {
@@ -69,19 +58,19 @@ public class App {
         String nombreUsuario = "David";
         //---------Datos del Juego--------------//
         String pokemones[][]={
-            //Formato: Nombre, Tipo1, Tipo2, Vida, Ataque, Defensa, Velocidad
-            {"Bulbasaur","Planta","Veneno","30","7","80","10"},
-            {"Charmander","Fuego","None","40","8","80","15"},
-            {"Squirtle","Agua","None","60","9","80","15"},
-            {"Pikachu","Electro","None","35","4","70","17"},
-            {"Charizard","Fuego","Volador","100","20","90","8"},
-            {"Mewtwo","Fuego","Volador","100","20","90","8"},
-            {"Mew","Planta","Volador","100","20","90","20"},
-            {"Jigglypuff","Electro","None","100","20","90","14"},
-            {"Arceus","Agua","Volador","100","20","90","11"},
-            {"Zapdos","Fuego","Volador","100","20","90","10"},
-            {"Lugia","Electro","Volador","100","20","90","8"},
-            {"Kyogre","Agua","Volador","100","20","90","8"},
+            //Formato: Nombre, Tipo1, Tipo2, Vida, Ataque, Defensa, Velocidad, Vida Maxima
+            {"Bulbasaur","Planta","Veneno","30","7","80","10","30"},
+            {"Charmander","Fuego","None","40","8","80","15","40"},
+            {"Squirtle","Agua","None","60","9","80","15","60"},
+            {"Pikachu","Electro","None","35","4","70","17","35"},
+            {"Charizard","Fuego","Volador","100","20","90","8","100"},
+            {"Mewtwo","Fuego","Volador","100","20","90","8","100"},
+            {"Mew","Planta","Volador","100","20","90","20","100"},
+            {"Jigglypuff","Electro","None","100","20","90","14","100"},
+            {"Arceus","Agua","Volador","100","20","90","11","100"},
+            {"Zapdos","Fuego","Volador","100","20","90","10","100"},
+            {"Lugia","Electro","Volador","100","20","90","8","100"},
+            {"Kyogre","Agua","Volador","100","20","90","8","100"},
         };
 
         String ataques[][]={
@@ -112,11 +101,19 @@ public class App {
 
         
         String objetos[][]={
-            //Formato: Nombre, Efecto, Valor, Duracion
-            {"Frasco Vida", "Vida", "20"},
-            {"Frasco Ataque", "Ataque", "20"},
-            {"Frasco Defensa", "Defensa", "20"},
-            {"Frasco Veneno", "Veneno", "20"},
+            //Formato: Nombre, Efecto, Valor, duracion, cantidad
+            {"Rociavida", "Vida", "20","0","3"},
+            {"Baya Dragón", "Ataque", "20","3","3"},
+            {"Proteína", "Ataque", "10","4","3"},
+            {"Trozo de estrella", "Ataque","30","2","3"},
+            {"Baya Roble", "Defensa", "20","3","3"},
+            {"Hierro", "Defensa", "30","2","3"},
+            {"Toxifruta", "Veneno", "10","3","3"},
+            {"Gota Morada", "Veneno", "7","4","3"},
+            {"Fragmento Vital", "Revivir", "0.5","0","2"}
+            //{"Piedra evolución", "Evolución", "0",""},
+            //{"Baya", "Vida", "10","0"},
+            //{"Curavita", "Vida", "30","0"},
         };
 
         //-------------------------------------//
@@ -134,7 +131,8 @@ public class App {
 
         
         //Se van agregando segun pase el tiempo
-        String objetosUsr[][] = new String[3][objetos[0].length];
+        String objetosUsr1[][] = new String[3][objetos[0].length];
+        String objetosUsr2[][] = new String[3][objetos[0].length];
 
             pokemonesUsr1= pokemonesRndm(pokemonesUsr1, pokemones);
             ataquesPokU1= ataquesRndm(ataquesPokU1, ataques,pokemonesUsr1);
@@ -143,7 +141,7 @@ public class App {
 
             //objetosUsr = ataquesRndm(objetosUsr, objetos);
 
-        pelea(pokemonesUsr1,pokemonesUsr2,ataquesPokU1,ataquesPokU2,"J1","J2", objetosUsr);
+        pelea(pokemonesUsr1,pokemonesUsr2,ataquesPokU1,ataquesPokU2,objetosUsr1,objetosUsr2,"J1","J2");
     }
 
     public static String[][] pokemonesRndm(String pokemonesU[][], String pokemonesGen[][]) {
@@ -188,17 +186,17 @@ public class App {
     }
 
 
-    public static int pelea(String[][] pokemonesU1, String[][] pokemonesU2, String[][] ataquesPokU1, String[][] ataquesPokU2, String Jugador1, String Jugador2, String[][]objetosUsr) {
+    public static int pelea(String[][] pokemonesU1, String[][] pokemonesU2, String[][] ataquesPokU1, String[][] ataquesPokU2,String[][]objetosUsr1,String[][]objetosUsr2, String Jugador1, String Jugador2) {
         //Siempre se usa e primer poquemon de cada usario para empezar la pelea
         int pokemonesUsuario1 = MAX_POKEMONES; //pokemones vivos de cada usario
         int pokemonesUsuario2 = MAX_POKEMONES;
-        String efectosPokemonesUsr1 [][] = new String[MAX_POKEMONES][objetosUsr.length];
-        String efectosPokemonesUsr2 [][] = new String[MAX_POKEMONES][objetosUsr.length];
+        int objetosRestantesUsr1 = MAX_OBJETOS; //
+        int objetosRestantesUsr2 = MAX_OBJETOS;
+        String efectosPokemonesUsr1 [][] = new String[MAX_POKEMONES][(objetosUsr2.length+objetosUsr1.length)*3];
+        String efectosPokemonesUsr2 [][] = new String[MAX_POKEMONES][(objetosUsr2.length+objetosUsr1.length)*3];
         int turno = 0;        int pokActivoU1 = 0;        int pokActivoU2 = 0;
         int eleccion=0;
 
-        String efectosjugador1[][]= new String[MAX_POKEMONES][10];
-        String efectosjugador2[][]= new String[MAX_POKEMONES][10];
 
         boolean jugador1=true;
         if(Integer.parseInt(pokemonesU1[0][IDX_VELOCIDAD_POKEMON])<=Integer.parseInt(pokemonesU2[0][IDX_VELOCIDAD_POKEMON]))jugador1=false;
@@ -215,6 +213,8 @@ public class App {
             };
         
             turno++;
+            validarEfectosEnJugadores();
+
             if(jugador1) {
                 //Si el usuario 1 es mas veloz, se va a empezar con el usuario 1
                 mostrarPokemon(pokemonesU1[pokActivoU1],ataquesPokAct1,pokemonesU2[pokActivoU2],turno,Jugador1);
@@ -223,10 +223,17 @@ public class App {
                     cambiarPokemon(pokemonesU1, pokActivoU1);//Cambio de pokemon
                 } else if (eleccion == 4) {
                     //Cuando se elija 4.
-                    p("Elija el objeto que quiere usar:");
-                    pFilasMismaColumna(objetosUsr,0,true);
-                    eleccion=Integer.parseInt(sc.nextLine());
-                    usarObjeto(eleccion,pokemonesU1[pokActivoU1],pokemonesU2[pokActivoU2],efectosPokemonesUsr1[pokActivoU1],efectosPokemonesUsr2[pokActivoU2],objetosUsr);
+                    if (objetosRestantesUsr1==0) {
+                        p("No hay objetos disponibles para usar");
+                    } else {
+                        p("Elija el objeto que quiere usar:");
+                        imprimirObjetosEnumarado(objetosUsr1);
+                        //Validacion eleccion entre 1 y objetosRestantes
+                        eleccion=Integer.parseInt(sc.nextLine());
+                        //TU BOOLEAN PARA FINALIZAR TURNO
+                        boolean tuBandera = usarObjeto(eleccion,pokActivoU1,pokActivoU2,pokemonesU1,pokemonesU2,efectosPokemonesUsr1,efectosPokemonesUsr2,objetosUsr1,pokemonesUsuario1);
+                    }
+                    
                 } else{
                     atacar(eleccion,pokemonesU1[pokActivoU1],ataquesPokAct1[eleccion],pokemonesU2[pokActivoU2]);
                 }
@@ -237,12 +244,20 @@ public class App {
                 do{
                     if(eleccion==5){
                         cambiarPokemon(pokemonesU2, pokActivoU2);
-                    }else if(eleccion==4){
+                    }else if (eleccion == 4) {
+                    //Cuando se elija 4.
+                    if (objetosRestantesUsr2==0) {
+                        p("No hay objetos disponibles para usar");
+                    } else {
                         p("Elija el objeto que quiere usar:");
-                    pFilasMismaColumna(objetosUsr,0,true);
-                    eleccion=Integer.parseInt(sc.nextLine());
-                    usarObjeto(eleccion,pokemonesU1[pokActivoU1],pokemonesU2[pokActivoU2],efectosPokemonesUsr1[pokActivoU1],efectosPokemonesUsr2[pokActivoU2],objetosUsr);
-                    }else{
+                        imprimirObjetosEnumarado(objetosUsr2);
+                        //Validacion eleccion entre 1 y objetosRestantes
+                        eleccion=Integer.parseInt(sc.nextLine());
+                        //TU BOOLEAN PARA FINALIZAR TURNO
+                        boolean tuBandera = usarObjeto(eleccion,pokActivoU2,pokActivoU1,pokemonesU2,pokemonesU1,efectosPokemonesUsr2,efectosPokemonesUsr1,objetosUsr2,pokemonesUsuario2);
+                    }
+                    
+                }else{
                         atacar(eleccion,pokemonesU2[pokActivoU2],ataquesPokAct2[eleccion],pokemonesU1[pokActivoU1]);
                     }
                 }while(eleccion<0 || eleccion>=MAX_ATAQUES+2);
@@ -325,38 +340,112 @@ public class App {
     }
 
     
-    public static void usarObjeto(int eleccion, String[]pokemonAtacante, String []pokemonEnem,String[] efectosPkmnAtac,String[] efectosPkmEnem, String[][] objetosUsr){
-        String objetoUsado = objetosUsr[eleccion-1][IDX_NOMBRE_OBJETO];
-        String efectoObjeto = objetosUsr[eleccion-1][IDX_EFECTO_OBJETO];
-        int valorEfectoObjeto = Integer.parseInt(objetosUsr[eleccion-1][IDX_VALOR_EFECTO_OBJETO]);
-        int vidaPokemonAtacante = Integer.parseInt(pokemonAtacante[IDX_VIDA_POKEMON]);
+    public static boolean usarObjeto(int eleccion,int pokemonActvivoAtac,int pokemonActivoEnem, String[][]pokemonAtac, 
+                                  String [][]pokemonEnem,String[][] efectosPkmnAtac,String[][] efectosPkmnEnem, String[][] objetosUsrAtac, int pokemonesVivosAtac){
+        
+        boolean usóObjeto = false;
+        String efectoObjeto = objetosUsrAtac[eleccion-1][IDX_EFECTO_OBJETO];
+        double valorEfectoObjeto = Integer.parseInt(objetosUsrAtac[eleccion-1][IDX_VALOR_EFECTO_OBJETO]);
+        int cantidadObjetos = Integer.parseInt(objetosUsrAtac[eleccion-1][IDX_CANTIDAD_OBJETO]);
+        int vidaPokemonAtacante = Integer.parseInt(pokemonAtac[pokemonActvivoAtac][IDX_VIDA_POKEMON]);
+        int duracionTurnosEfecto = Integer.parseInt(objetosUsrAtac[eleccion-1][IDX_DURACION_EFECTO_OBJETO]);
+        int revivirEleccion = 0;
 
-        if (objetoUsado.compareTo("Frasco Vida")==0) {
+        if (efectoObjeto.equals("Vida")) {
             vidaPokemonAtacante+=valorEfectoObjeto;
-            pokemonAtacante[IDX_VIDA_POKEMON] = Integer.toString(vidaPokemonAtacante);
-        } else if (objetoUsado.compareTo("Frasco Ataque")==0
-                  ||objetoUsado.compareTo("Frasco Defensa")==0) {
-            for (int i = 0; i <efectosPkmnAtac.length;i++){
-                if (efectosPkmnAtac[i].compareTo(null)==0
-                || efectosPkmnAtac[i].substring(1).compareTo("Ataque")==0
-                || efectosPkmnAtac[i].substring(1).compareTo("Defensa")==0) {
-                    efectosPkmnAtac[i] = 3 + efectoObjeto;
-                    //3 es la duracion que dura el efecto y que ira reduciendose por turnos
+            if (vidaPokemonAtacante>=Integer.parseInt(pokemonAtac[pokemonActvivoAtac][IDX_VIDA_MAXIMA_POKEMON])) {
+                pokemonAtac[pokemonActvivoAtac][IDX_VIDA_POKEMON] = pokemonAtac[pokemonActvivoAtac][IDX_VIDA_MAXIMA_POKEMON];
+            } else{
+                pokemonAtac[pokemonActvivoAtac][IDX_VIDA_POKEMON] = Integer.toString(vidaPokemonAtacante);
+            }
+            usóObjeto = true;
+
+        } else if (efectoObjeto.equals("Ataque")
+                  ||efectoObjeto.equals("Defensa")) {
+            for (int i = 0; i <efectosPkmnAtac[0].length;i+=3){
+                if (efectosPkmnAtac[pokemonActvivoAtac][i].equals(null)
+                || efectosPkmnAtac[pokemonActvivoAtac][i].equals(efectoObjeto)) {
+                    efectosPkmnAtac[pokemonActvivoAtac][i] = efectoObjeto;
+                    efectosPkmnAtac[pokemonActvivoAtac][i+1] = Integer.toString((int)valorEfectoObjeto);
+                    efectosPkmnAtac[pokemonActvivoAtac][i+2] = Integer.toString(duracionTurnosEfecto);
                     break;
                 }
             }
-        } else if (objetoUsado.compareTo("Frasco Veneno")==0){
-            for (int i = 0; i <efectosPkmEnem.length;i++){
-                if (efectosPkmEnem[i].compareTo(null)==0
-                || efectosPkmEnem[i].substring(1).compareTo("Veneno")==0) {
-                    efectosPkmEnem[i] = 3 + efectoObjeto;
-                    //3 es la duracion que dura el efecto y que ira reduciendose por turnos
+            usóObjeto = true;
+        } else if (efectoObjeto.equals("Veneno")){
+            for (int i = 0; i <efectosPkmnEnem[0].length;i++){
+                if (efectosPkmnEnem[pokemonActivoEnem][i].equals(null)
+                || efectosPkmnEnem[pokemonActivoEnem][i].equals(efectoObjeto)) {
+                    efectosPkmnEnem[pokemonActivoEnem][i] = Integer.toString((int)valorEfectoObjeto);
+                    efectosPkmnEnem[pokemonActivoEnem][i+1] = Integer.toString(duracionTurnosEfecto);
                     break;
                 }
+            }
+            usóObjeto = true;
+        } else if (efectoObjeto.equals("Revivir")){
+            if (pokemonesVivosAtac!=MAX_POKEMONES) {
+                p("Elija el pokemon a revivir:");
+                imprimirColumnaEnumerado(pokemonAtac, IDX_NOMBRE_POKEMON);
+                revivirEleccion=Integer.parseInt(sc.nextLine());
+                if(revivirEleccion<1||revivirEleccion>MAX_POKEMONES||!pokemonAtac[revivirEleccion-1][IDX_VIDA_POKEMON].equals("0")){
+                    p("No se pudo usar el objeto");
+                } else {
+                    double temp = Double.parseDouble(pokemonAtac[revivirEleccion-1][IDX_VIDA_MAXIMA_POKEMON])*valorEfectoObjeto;
+                    pokemonAtac[revivirEleccion-1][IDX_VIDA_POKEMON]=Integer.toString((int)temp);
+                    usóObjeto = true;
+                }
+
+            } else {
+                p("No tienes pokemones para revivir");
             }
         }
         
+        if (usóObjeto) {
+            cantidadObjetos--;
+            objetosUsrAtac[eleccion-1][IDX_CANTIDAD_OBJETO] = Integer.toString(cantidadObjetos);
+            ordenarVerticalmenteObjetos(objetosUsrAtac);
+            if (cantidadObjetos== 0) {
+                
+            }
+        }
         
 
+        
+        return usóObjeto;
     };
+
+    public static void validarEfectosEnJugadores(){}
+
+    public static void ordenarVerticalmenteObjetos(String[][]objetosUsr){
+        boolean huboCambio = false;
+        for(int j = 0; j < objetosUsr.length - 1; j++){
+            huboCambio = false;
+            for(int i = 0; i < objetosUsr.length - 1 - j;i++) {
+                if (Integer.parseInt(objetosUsr[i][IDX_CANTIDAD_OBJETO])<Integer.parseInt(objetosUsr[i+1][IDX_CANTIDAD_OBJETO])){
+                    String temp[] = objetosUsr[i];
+                    objetosUsr[i] = objetosUsr[i+1];
+                    objetosUsr[i+1] = temp;
+                    huboCambio = true;
+                }
+            }
+            if (!huboCambio) break;
+        }
+    }
+
+    public static void imprimirColumnaEnumerado(String[][] matriz, int columna) {
+        for (int j = 0; j < matriz.length;j++){
+            p((j+1) + ". " + matriz[j][columna]);
+        }
+    }
+    public static void imprimirObjetosEnumarado(String[][] objetosUsr) {
+
+        for(int i =0; i < objetosUsr.length; i++) {
+            if(!objetosUsr[i][IDX_CANTIDAD_OBJETO].equals("0")) {
+                p((i+1) + ". " + objetosUsr[i][IDX_NOMBRE_OBJETO]);
+            }
+                
+            } 
+
+        
+    }
 }
