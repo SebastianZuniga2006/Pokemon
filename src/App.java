@@ -120,7 +120,7 @@ public class App {
             //Formato: Nombre, Efecto, Valor, duracion, cantidad
             {"Rociavida", "Vida", "20","0","3"},
             {"Baya Dragon", "Ataque", "20","3","3"},
-            {"Proteína", "Ataque", "10","4","3"},
+            {"Proteina", "Ataque", "10","4","3"},
             {"Trozo de estrella", "Ataque","30","2","3"},
             {"Baya Roble", "Defensa", "20","3","3"},
             {"Hierro", "Defensa", "30","2","3"},
@@ -504,7 +504,7 @@ public class App {
 
             for (int j = i + 1; j < n; j++){
                 if (Integer.parseInt(copiaPokemones[j][posInt]) < Integer.parseInt(copiaPokemones[indiceMinimo][posInt])){
-                    indiceMinimo = j;
+                    indiceMinimo = j;   
                 }
             }
 
@@ -672,16 +672,60 @@ public class App {
 	}
 
 
-	public static void imprimirTablaDatos(String[] [] matriz) {
-		System.out.printf("\n%-20s %-15s %-15s %-10s %-10s %-10s %-10s \n", "Nombre", "Tipo1", "Tipo2", "Vida", "Ataque", "Defensa", "Velocidad");
-		System.out.println("======================================================================================================");
-		
-		for (int i = 0; i < matriz.length; i++) {
-                System.out.printf("%-20s %-15s %-15s %-10s %-10s %-10s %-10s\n",
-                          matriz[i][0], matriz[i][1], matriz[i][2],
-                          matriz[i][3], matriz[i][4], matriz[i][5], matriz[i][6]);
+	public static void imprimirTablaDatos(String[][] mat) {
+    if (mat == null || mat.length == 0) {
+        System.out.println("No hay datos para mostrar.");
+        return;
+    }
+
+    int columnas = mat[0].length;
+
+    // Encabezados personalizados
+    String[] encabezados = {
+        "Nombre", "Tipo 1", "Tipo 2", "Vida", "Ataque", "Defensa", "Velocidad", "Vida Máxima"
+    };
+
+    // Si hay más columnas de las que esperábamos, generamos encabezados genéricos
+    if (encabezados.length < columnas) {
+        encabezados = new String[columnas];
+        for (int i = 0; i < columnas; i++) {
+            encabezados[i] = "Columna " + (i + 1);
         }
-	}
+    }
+
+    // Calcular ancho máximo por columna (considerando encabezados y datos)
+    int[] anchos = new int[columnas];
+    for (int j = 0; j < columnas; j++) {
+        anchos[j] = encabezados[j].length();
+        for (int i = 0; i < mat.length; i++) {
+            if (mat[i] != null && mat[i][j] != null) {
+                anchos[j] = Math.max(anchos[j], mat[i][j].length());
+            }
+        }
+    }
+
+    // Imprimir encabezados
+    for (int j = 0; j < columnas; j++) {
+        System.out.print(String.format("%-" + (anchos[j] + 2) + "s", encabezados[j]));
+    }
+    System.out.println();
+
+    // Imprimir una línea separadora
+    for (int j = 0; j < columnas; j++) {
+        System.out.print("-".repeat(anchos[j]) + "  ");
+    }
+    System.out.println();
+
+    // Imprimir filas con formato
+    for (int i = 0; i < mat.length; i++) {
+        if (mat[i] == null) continue;
+        for (int j = 0; j < columnas; j++) {
+            String dato = (mat[i][j] != null) ? mat[i][j] : "-";
+            System.out.print(String.format("%-" + (anchos[j] + 2) + "s", dato));
+        }
+        System.out.println();
+    }
+}
 		
 	
 
